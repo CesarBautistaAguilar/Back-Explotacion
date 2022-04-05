@@ -1,7 +1,9 @@
+import Constans from '../commons/Constans'
+
 const headers = {
     accept: 'application/vnd.mambu.v2+json',
     'content-type': 'application/json',
-    Authorization: ''
+    Authorization: `Basic ${Constans.AUTH}`
   }
 
 const typeToday = (field) => {
