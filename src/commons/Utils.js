@@ -8,37 +8,40 @@ const headers = {
 
 const typeToday = (field) => {
     return {
-        'sortingCriteria': {
-            'field': 'id',
-            'order': 'ASC'
+        sortingCriteria: {
+            field,
+            order: 'ASC'
         },
-        'filterCriteria': [
+        filterCriteria: [
             {
-                'field': field,
-                'operator': 'TODAY'
+                field,
+                operator: 'TODAY'
             }
         ]
     }
 }
 
 const typeTodayandField = (field, search) => {
-    return {
-        'sortingCriteria': {
+    const process = {
+        sortingCriteria: {
             field,
-            'order': 'ASC'
+            order: 'ASC'
         },
-        'filterCriteria': [
+        filterCriteria: [
             {
                 field,
-                'operator': 'TODAY'
-            },
-            {
-                'field': search.field,
-                'operator': "EQUALS",
-                'value': search.value
+                operator: 'TODAY'
             }
         ]
     }
+    if(Object.keys(search).length === 2) {
+        process.filterCriteria.push({
+            field: search.field,
+            operator: 'EQUALS',
+            value: search.value
+        })
+    }
+    return process
 }
 
 const createUpertBulkID = (registrie) => {
