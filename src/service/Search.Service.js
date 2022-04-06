@@ -4,6 +4,7 @@ import { Utils } from '../commons/Utils'
 import { ClientsDao } from '../dao/Clients.Dao'
 import { loansDao } from '../dao/Loans.Dao'
 import { TransactionsDao } from '../dao/Transactions.Dao'
+import { GLjournalentriesDao } from '../dao/GLjournalentries.Dao'
 
 const saveClient = async (document) => {
   console.log('method saveClient Service started')
@@ -16,7 +17,7 @@ const saveClient = async (document) => {
   const responseParse = await response.json()
   const process = JSON.parse(JSON.stringify(responseParse))
   process.forEach(property => {
-    allbulk.push(Utils.createUpertBulk(property))
+    allbulk.push(Utils.createUpertBulkID(property))
   })
   const result = await ClientsDao.saveClient(allbulk)
   console.log(`result insert => ${JSON.stringify(result)}`)
@@ -44,7 +45,7 @@ const saveLoans = async (document) => {
   const responseParse = await response.json()
   const process = JSON.parse(JSON.stringify(responseParse))
   process.forEach(property => {
-    allbulk.push(Utils.createUpertBulk(property))
+    allbulk.push(Utils.createUpertBulkID(property))
   })
   const result = await loansDao.saveLoans(allbulk)
   console.log(`result insert => ${JSON.stringify(result)}`)
@@ -72,7 +73,7 @@ const saveTransactions = async (document) => {
   const responseParse = await response.json()
   const process = JSON.parse(JSON.stringify(responseParse))
   process.forEach(property => {
-    allbulk.push(Utils.createUpertBulk(property))
+    allbulk.push(Utils.createUpertBulkID(property))
   })
   const result = await TransactionsDao.saveTransactions(allbulk)
   console.log(`result insert => ${JSON.stringify(result)}`)
@@ -89,13 +90,44 @@ const getTransactions = async (document) => {
   return result
 }
 
+const saveGLjournalentries = async (document) => {
+  console.log('method saveGLjournalentries Service started')
+  const allbulk = []
+  const bodysearch = Utils.typeTodayandField('creationDate', document)
+  const response = await fetch(`${Constans.URL_MAMBU}/gljournalentries:search?paginationDetails=OFF&detailsLevel=FULL`,{
+    method: 'post',
+    body: JSON.stringify(bodysearch),
+    headers: Utils.headers
+  })
+  const responseParse = await response.json()
+  const process = JSON.parse(JSON.stringify(responseParse))
+  process.forEach(property => {
+    allbulk.push(Utils.createUpertBulkEntryID(property))
+  })
+  const result = await GLjournalentriesDao.saveGLjournalentries(allbulk)
+  console.log(`result insert => ${JSON.stringify(result)}`)
+  console.log(`result search => ${JSON.stringify(responseParse.length)}`)
+  console.log('method saveGLjournalentries Service ending')
+  return responseParse
+}
+
+const getGLjournalentries = async (document) => {
+  console.log('method getGLjournalentries Service started')
+  const result = await GLjournalentriesDao.getGLjournalentries()
+  console.log(`result=> ${JSON.stringify(result)}`)
+  console.log('method getGLjournalentries Service ending')
+  return result
+}
+
 export const searchService = {
   saveClient,
   getClient,
   saveLoans,
   getLoans,
   saveTransactions,
-  getTransactions
+  getTransactions,
+  saveGLjournalentries,
+  getGLjournalentries
 }
 
 export default null

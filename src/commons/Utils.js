@@ -21,7 +21,27 @@ const typeToday = (field) => {
     }
 }
 
-const createUpertBulk = (registrie) => {
+const typeTodayandField = (field, search) => {
+    return {
+        'sortingCriteria': {
+            field,
+            'order': 'ASC'
+        },
+        'filterCriteria': [
+            {
+                field,
+                'operator': 'TODAY'
+            },
+            {
+                'field': search.field,
+                'operator': "EQUALS",
+                'value': search.value
+            }
+        ]
+    }
+}
+
+const createUpertBulkID = (registrie) => {
     const result = {
         updateOne: {
             filter: { id: registrie.id},
@@ -32,10 +52,23 @@ const createUpertBulk = (registrie) => {
     return result
 }
 
+const createUpertBulkEntryID = (registrie) => {
+    const result = {
+        updateOne: {
+            filter: { entryID: registrie.entryID},
+            update: { $set: registrie },
+            upsert: true
+        }
+    }
+    return result
+}
+
 export const Utils = {
     typeToday,
+    typeTodayandField,
     headers,
-    createUpertBulk
+    createUpertBulkID,
+    createUpertBulkEntryID
 }
 
 export default null

@@ -124,3 +124,6 @@ dist
 
 #build
 build/
+
+#Variables de entorno
+VariablesEntorno.txt
