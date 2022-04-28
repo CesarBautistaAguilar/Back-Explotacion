@@ -5,13 +5,14 @@ import { ClientsDao } from '../dao/Clients.Dao'
 import { loansDao } from '../dao/Loans.Dao'
 import { TransactionsDao } from '../dao/Transactions.Dao'
 import { GLjournalentriesDao } from '../dao/GLjournalentries.Dao'
+import { DepositsDao } from '../dao/Deposits.Dao'
 
 const saveClient = async (document) => {
   console.log('method saveClient Service started')
   const allbulk = []
   const response = await fetch(`${Constans.URL_MAMBU}/clients:search?paginationDetails=OFF&detailsLevel=FULL`,{
     method: 'post',
-    body: JSON.stringify(Utils.typeToday('lastModifiedDate')),
+    body: JSON.stringify(Utils.typeTodayandField('lastModifiedDate', document)),
     headers: Utils.headers
   })
   const responseParse = await response.json()
@@ -39,7 +40,7 @@ const saveLoans = async (document) => {
   const allbulk = []
   const response = await fetch(`${Constans.URL_MAMBU}/loans:search?paginationDetails=OFF&detailsLevel=FULL`,{
     method: 'post',
-    body: JSON.stringify(Utils.typeToday('lastModifiedDate')),
+    body: JSON.stringify(Utils.typeTodayandField('lastModifiedDate', document)),
     headers: Utils.headers
   })
   const responseParse = await response.json()
@@ -67,7 +68,7 @@ const saveTransactions = async (document) => {
   const allbulk = []
   const response = await fetch(`${Constans.URL_MAMBU}/loans/transactions:search?paginationDetails=OFF&detailsLevel=FULL`,{
     method: 'post',
-    body: JSON.stringify(Utils.typeToday('creationDate')),
+    body: JSON.stringify(Utils.typeTodayandField('creationDate', document)),
     headers: Utils.headers
   })
   const responseParse = await response.json()
@@ -93,10 +94,9 @@ const getTransactions = async (document) => {
 const saveGLjournalentries = async (document) => {
   console.log('method saveGLjournalentries Service started')
   const allbulk = []
-  const bodysearch = Utils.typeTodayandField('creationDate', document)
   const response = await fetch(`${Constans.URL_MAMBU}/gljournalentries:search?paginationDetails=OFF&detailsLevel=FULL`,{
     method: 'post',
-    body: JSON.stringify(bodysearch),
+    body: JSON.stringify(Utils.typeTodayandField('creationDate', document)),
     headers: Utils.headers
   })
   const responseParse = await response.json()
@@ -119,6 +119,35 @@ const getGLjournalentries = async (document) => {
   return result
 }
 
+const saveDeposits = async (document) => {
+  console.log('method saveDeposits Service started')
+  const allbulk = []
+  const bodysearch = Utils.typeTodayandField('lastModifiedDate', document)
+  const response = await fetch(`${Constans.URL_MAMBU}/deposits:search?paginationDetails=OFF&detailsLevel=FULL`,{
+    method: 'post',
+    body: JSON.stringify(bodysearch),
+    headers: Utils.headers
+  })
+  const responseParse = await response.json()
+  const process = JSON.parse(JSON.stringify(responseParse))
+  process.forEach(property => {
+    allbulk.push(Utils.createUpertBulkID(property))
+  })
+  const result = await DepositsDao.saveDeposits(allbulk)
+  console.log(`result insert => ${JSON.stringify(result)}`)
+  console.log(`result search => ${JSON.stringify(responseParse.length)}`)
+  console.log('method saveDeposits Service ending')
+  return responseParse
+}
+
+const getDeposits = async (document) => {
+  console.log('method getDeposits Service started')
+  const result = await DepositsDao.getDeposits()
+  console.log(`result=> ${JSON.stringify(result)}`)
+  console.log('method getDeposits Service ending')
+  return result
+}
+
 export const searchService = {
   saveClient,
   getClient,
@@ -127,7 +156,9 @@ export const searchService = {
   saveTransactions,
   getTransactions,
   saveGLjournalentries,
-  getGLjournalentries
+  getGLjournalentries,
+  saveDeposits,
+  getDeposits
 }
 
 export default null

@@ -64,6 +64,23 @@ const getGLjournalentries = async (req, res) => {
   res.json(result)
 }
 
+const saveDeposits = async (req, res) => {
+  console.log('method saveDeposits Controller started')
+  const requestBody = req.body
+  console.log(`requestBody => ${JSON.stringify(requestBody)}`)
+  const result = await searchService.saveDeposits(requestBody)
+  console.log('method saveDeposits Controller ending')
+  res.json(result)
+}
+
+const getDeposits = async (req, res) => {
+  console.log('method getDeposits Controller started')
+  const result = await searchService.getDeposits()
+  console.log('method getDeposits Controller ending')
+  res.json(result)
+}
+
+
 export const searchController = {
   saveClient,
   getClient,
@@ -72,7 +89,9 @@ export const searchController = {
   saveTransactions,
   getTransactions,
   saveGLjournalentries,
-  getGLjournalentries
+  getGLjournalentries,
+  saveDeposits,
+  getDeposits
 }
 
 export default null

@@ -6,21 +6,6 @@ const headers = {
     Authorization: `Basic ${Constans.AUTH}`
   }
 
-const typeToday = (field) => {
-    return {
-        sortingCriteria: {
-            field,
-            order: 'ASC'
-        },
-        filterCriteria: [
-            {
-                field,
-                operator: 'TODAY'
-            }
-        ]
-    }
-}
-
 const typeTodayandField = (field, search) => {
     const process = {
         sortingCriteria: {
@@ -67,7 +52,6 @@ const createUpertBulkEntryID = (registrie) => {
 }
 
 export const Utils = {
-    typeToday,
     typeTodayandField,
     headers,
     createUpertBulkID,
