@@ -1,12 +1,17 @@
 import mongoose from 'mongoose'
+import Moment from 'moment'
 
 export const GenericSchema = new mongoose.Schema(
   {
-    id: String
+    id: String,
+    encodedKey: String
   },
   {
     versionKey: false,
-    strict: false
+    strict: false,
+    timestamps: {
+      currentTime: () => Moment(Moment.now(), 'x').toISOString()
+    }
   }
 )
 

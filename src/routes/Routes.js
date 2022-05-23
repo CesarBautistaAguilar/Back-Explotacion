@@ -6,7 +6,9 @@ import { clientsController } from '../controller/Clients.Controller'
 const router = express.Router()
 
 router.get('/', HelloController.healthCheck)
-router.route('/client').post(clientsController.createClient)
+router.route('/client')
+    .post(clientsController.createClient)
+    .put(clientsController.updateClient)
 router.route('/client-mambu/:clientId').get(clientsController.getClientMambu)
 router.route('/client-validation/:id').get(clientsController.validationClient)
 router.route('/product').post(ProductController.healthCheck)

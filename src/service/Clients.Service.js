@@ -17,21 +17,17 @@ const getClientMambu = async (clientId) => {
 
 const createClient = async body => {
     console.log('Service starting method createClient')
-    let result = {}
     const bodyLoan = Utils.bodyClient(body)
     const sendMambu = await fetch(`${Constans.URL_MAMBU}/clients`,{
         method: 'POST',
         body: JSON.stringify(bodyLoan),
         headers: Utils.headers
       })
+    const result = await sendMambu.json()
     const status = sendMambu.status
     if (sendMambu.ok) {
-        const resultMambu = JSON.parse(JSON.stringify(await sendMambu.json()))
-        console.log(`Response to Mambu: ${JSON.stringify(resultMambu)}`)
-        const { id, encodedKey } = resultMambu
-        result = await clientsDao.saveClients(id, encodedKey)
-    }else {
-        result = JSON.parse(JSON.stringify(await sendMambu.json()))
+        const { id, encodedKey } = JSON.parse(JSON.stringify(result))
+        await clientsDao.saveClients(id, encodedKey)
     }
     console.log(`Result: ${JSON.stringify(result)}`)
     console.log('Service ending method createClient')
@@ -42,16 +38,36 @@ const validationClient = async id => {
     console.log('Service starting method validationClient')
     let result = { exist: false }
     const response = await clientsDao.existsClients(id)
-    if (response) result = { exist: true }
+    if (response.length === 1) result = { exist: true, encodedKey: response[0].encodedKey }
     console.log(`Result: ${JSON.stringify(result)}`)
     console.log('Service ending method validationClient')
     return result
 }
 
+const updateClient = async body => {
+    console.log('Service starting method updateClient')
+    const bodyLoan = Utils.bodyClient(body)
+    const sendMambu = await fetch(`${Constans.URL_MAMBU}/clients/${body.id}`,{
+        method: 'PUT',
+        body: JSON.stringify(bodyLoan),
+        headers: Utils.headers
+      })
+    const result = await sendMambu.json()
+    const status = sendMambu.status
+    if (sendMambu.ok) {
+        const { id, encodedKey } = JSON.parse(JSON.stringify(result))
+        await clientsDao.updateClients(id, encodedKey)
+    }
+    console.log(`Result: ${JSON.stringify(result)}`)
+    console.log('Service ending method updateClient')
+    return { result, status }
+}
+
 export const productService = {
     getClientMambu,
     validationClient,
-    createClient
+    createClient,
+    updateClient
 }
   
 export default null

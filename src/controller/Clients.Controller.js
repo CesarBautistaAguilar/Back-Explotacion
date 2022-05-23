@@ -27,11 +27,22 @@ const validationClient = async (req, res) => {
     console.log('Controller ending method validationClient')
     res.json(result)
 }
+
+const updateClient = async (req, res) => {
+    console.log('Controller starting method updateClient')
+    const { body } = req
+    console.log(`Body to petition: ${JSON.stringify(body)}`)
+    const { result, status } = await productService.updateClient(body)
+    console.log('Controller ending method updateClient')
+    res.status(status)
+    res.json(result)
+}
   
 export const clientsController = {
     getClientMambu,
     createClient,
-    validationClient
+    validationClient,
+    updateClient
 }
   
 export default null
