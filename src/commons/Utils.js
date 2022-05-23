@@ -6,51 +6,6 @@ const headers = {
     Authorization: `Basic ${Constans.AUTH}`
   }
 
-const typeTodayandField = (field, search) => {
-    const process = {
-        sortingCriteria: {
-            field,
-            order: 'ASC'
-        },
-        filterCriteria: [
-            {
-                field,
-                operator: 'TODAY'
-            }
-        ]
-    }
-    if(Object.keys(search).length === 2) {
-        process.filterCriteria.push({
-            field: search.field,
-            operator: 'EQUALS',
-            value: search.value
-        })
-    }
-    return process
-}
-
-const createUpertBulkID = (registrie) => {
-    const result = {
-        updateOne: {
-            filter: { id: registrie.id},
-            update: { $set: registrie },
-            upsert: true
-        }
-    }
-    return result
-}
-
-const createUpertBulkEntryID = (registrie) => {
-    const result = {
-        updateOne: {
-            filter: { entryID: registrie.entryID},
-            update: { $set: registrie },
-            upsert: true
-        }
-    }
-    return result
-}
-
 const catalogProducts = (property) => {
     const result = {
         encodedKey: property.encodedKey, 
@@ -66,24 +21,20 @@ const catalogProducts = (property) => {
     return result
 }
 
-const feesInformation = (property) => {
-    const result = []
-    property.forEach(element => {
-        result.push({
-            encodedKey: element.encodedKey,
-            id: element.id,
-            name: element.name
-        })
-    })
+const bodyClient = property => {
+    const result = {
+        ...property,
+        preferredLanguage: 'SPANISH',
+        assignedBranchKey: '8a44b1847f4efa4a017f4fc87a6d02f3'
+    }
+    console.log(`Body client: ${JSON.stringify(result)}`)
     return result
 }
 
 export const Utils = {
-    typeTodayandField,
     headers,
-    createUpertBulkID,
-    createUpertBulkEntryID,
-    catalogProducts
+    catalogProducts,
+    bodyClient
 }
 
 export default null
