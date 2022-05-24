@@ -4,10 +4,10 @@ import { GenericSchema } from '../models/Generic.Model'
 
 const clients = Mongoose.model('clients', GenericSchema)
 
-const saveClients = async (id, encodedKey) => {
+const saveClients = async (encodedKey, body) => {
     console.log('DAO starting method saveClients')
     const newRegistry = {
-        id, 
+        ...body,
         encodedKey
     }
     const result = await clients.create(newRegistry)
@@ -15,16 +15,16 @@ const saveClients = async (id, encodedKey) => {
     console.log('DAO ending method saveClients')
 }
 
-const updateClients = async (id, encodedKey) => {
+const updateClients = async (id, body) => {
     console.log('DAO starting method updateClients')
     const updateRegistry = {
-        id, 
-        encodedKey,
+        ...body,
         updatedAt: Moment(Moment.now(), 'x').toISOString()
     }
     const result = await clients.findOneAndUpdate({ id }, updateRegistry)
     console.log(`Result operation db: ${JSON.stringify(result)}`)
     console.log('DAO starting method updateClients')
+    return result
 }
 
 const existsClients = async id => {

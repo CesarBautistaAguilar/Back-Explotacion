@@ -23,7 +23,9 @@ const catalogProducts = (property) => {
 
 const bodyClient = property => {
     const result = {
-        ...property,
+        id: property.id,
+        firstName: property.firstName,
+        lastName: property.lastName,
         preferredLanguage: 'SPANISH',
         assignedBranchKey: '8a44b1847f4efa4a017f4fc87a6d02f3'
     }
@@ -31,10 +33,24 @@ const bodyClient = property => {
     return result
 }
 
+const updateClient = property => {
+    const result = []
+    const keys = ['firstName', 'lastName']
+    keys.forEach(key =>{
+        result.push({
+            op: 'REPLACE',
+            path: key,
+            value: property[key]
+          })
+    })
+    return result
+}
+
 export const Utils = {
     headers,
     catalogProducts,
-    bodyClient
+    bodyClient,
+    updateClient
 }
 
 export default null

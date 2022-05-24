@@ -1,14 +1,10 @@
-import fetch from 'node-fetch'
-import Constans from '../commons/Constans'
 import { Utils } from '../commons/Utils'
 import { clientsDao } from '../dao/Clients.Dao'
+import { consumeServices } from '../commons/ConsumeServices'
 
 const getClientMambu = async (clientId) => {
     console.log('Service starting method getClientMambu')
-    const sendMambu = await fetch(`${Constans.URL_MAMBU}/clients/${clientId}?detailsLevel=FULL`,{
-        method: 'GET',
-        headers: Utils.headers
-      })
+    const sendMambu = await consumeServices.petitionRest(`clients/${clientId}?detailsLevel=FULL`, {}, 'GET')
     const result = await sendMambu.json()
     console.log(`Response: ${JSON.stringify(result)}`)
     console.log('Service ending method getClientMambu')
@@ -18,16 +14,12 @@ const getClientMambu = async (clientId) => {
 const createClient = async body => {
     console.log('Service starting method createClient')
     const bodyLoan = Utils.bodyClient(body)
-    const sendMambu = await fetch(`${Constans.URL_MAMBU}/clients`,{
-        method: 'POST',
-        body: JSON.stringify(bodyLoan),
-        headers: Utils.headers
-      })
+    const sendMambu = await consumeServices.petitionRest('clients', bodyLoan, 'POST')
     const result = await sendMambu.json()
     const status = sendMambu.status
     if (sendMambu.ok) {
-        const { id, encodedKey } = JSON.parse(JSON.stringify(result))
-        await clientsDao.saveClients(id, encodedKey)
+        const { encodedKey } = JSON.parse(JSON.stringify(result))
+        await clientsDao.saveClients(encodedKey, body)
     }
     console.log(`Result: ${JSON.stringify(result)}`)
     console.log('Service ending method createClient')
@@ -46,18 +38,17 @@ const validationClient = async id => {
 
 const updateClient = async body => {
     console.log('Service starting method updateClient')
-    const bodyLoan = Utils.bodyClient(body)
-    const sendMambu = await fetch(`${Constans.URL_MAMBU}/clients/${body.id}`,{
-        method: 'PUT',
-        body: JSON.stringify(bodyLoan),
-        headers: Utils.headers
-      })
-    const result = await sendMambu.json()
+    const { id } =  body
+    delete body.id
+    let result
+    const bodyLoan = Utils.updateClient(body)
+    console.log(`bodyLoan: ${JSON.stringify(bodyLoan)}`)
+    const sendMambu = await consumeServices.petitionRest(`clients/${id}`, bodyLoan, 'PATCH')
     const status = sendMambu.status
-    if (sendMambu.ok) {
-        const { id, encodedKey } = JSON.parse(JSON.stringify(result))
-        await clientsDao.updateClients(id, encodedKey)
-    }
+    if (sendMambu.ok) 
+        result = await clientsDao.updateClients(id, body)
+    else
+      result = await sendMambu.json()
     console.log(`Result: ${JSON.stringify(result)}`)
     console.log('Service ending method updateClient')
     return { result, status }

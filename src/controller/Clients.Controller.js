@@ -1,6 +1,7 @@
 import { productService } from '../service/Clients.Service'
 
 const getClientMambu = async (req, res) => {
+    console.log('=========================================================')
     console.log('Controller starting method getClientMambu')
     const { clientId } = req.params
     console.log(`clientId: ${JSON.stringify(clientId)}`)
@@ -10,6 +11,7 @@ const getClientMambu = async (req, res) => {
 }
 
 const createClient = async (req, res) => {
+    console.log('=========================================================')
     console.log('Controller starting method createClient')
     const { body } = req
     console.log(`Body to petition: ${JSON.stringify(body)}`)
@@ -20,6 +22,7 @@ const createClient = async (req, res) => {
 }
 
 const validationClient = async (req, res) => {
+    console.log('=========================================================')
     console.log('Controller starting method validationClient')
     const { id } = req.params
     console.log(`clientId: ${JSON.stringify(id)}`)
@@ -29,6 +32,7 @@ const validationClient = async (req, res) => {
 }
 
 const updateClient = async (req, res) => {
+    console.log('=========================================================')
     console.log('Controller starting method updateClient')
     const { body } = req
     console.log(`Body to petition: ${JSON.stringify(body)}`)
