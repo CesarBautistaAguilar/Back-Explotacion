@@ -15,8 +15,7 @@ const catalogProducts = (property) => {
         numInstallments: property.scheduleSettings.numInstallments,
         interestRate: property.interestSettings.indexRateSettings.interestRate,
         creditArrangementSettings: property.creditArrangementSettings.creditArrangementRequirement,
-        amortizationMethod: property.paymentSettings.amortizationMethod,
-        fees: feesInformation(property.feesSettings.fees)
+        amortizationMethod: property.paymentSettings.amortizationMethod
     }
     return result
 }
@@ -46,11 +45,25 @@ const updateClient = property => {
     return result
 }
 
+const updateLoan = property => {
+    const result = []
+    const keys = Object.keys(property)
+    keys.forEach(key =>{
+        result.push({
+            op: 'REPLACE',
+            path: key,
+            value: property[key]
+          })
+    })
+    return result
+}
+
 export const Utils = {
     headers,
     catalogProducts,
     bodyClient,
-    updateClient
+    updateClient,
+    updateLoan
 }
 
 export default null
