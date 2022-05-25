@@ -27,17 +27,17 @@ const updateLoans = async (id, body) => {
     return result
 }
 
-const existsClients = async id => {
-    console.log('DAO starting method existsClients')
-    const result = await clients.find({ id }).select('-_id')
-    console.log(`Result: ${JSON.stringify(result)}`)
-    console.log('DAO ending method existsClients')
+const getLoans = async search => {
+    console.log('DAO starting method getLoans')
+    const result = await loans.find(search)
+    console.log('DAO ending method getLoans')
     return result
 }
 
 export const loansDao = {
     saveLoans,
-    updateLoans
+    updateLoans,
+    getLoans
 }
 
 export default null

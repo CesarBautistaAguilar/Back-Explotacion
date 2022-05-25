@@ -58,12 +58,59 @@ const updateLoan = property => {
     return result
 }
 
+const segmentationSchema = installments => {
+    const result = []
+    installments.forEach(installment =>{
+        const { interest, fee, penalty } = installment
+        let output = installment
+        output['interest'] = {
+            amount: {
+                expected: parseFloat((interest.amount.expected - interest.tax.expected).toFixed(2)),
+                paid: parseFloat((interest.amount.paid - interest.tax.paid).toFixed(2)),
+                due: parseFloat((interest.amount.due - interest.tax.due).toFixed(2))
+            },
+            tax: {
+                expected: interest.tax.expected,
+                paid: interest.tax.paid,
+                due: interest.tax.due
+            }
+        }
+        output['fee'] = {
+            amount: {
+                expected: parseFloat((fee.amount.expected - fee.tax.expected).toFixed(2)),
+                paid: parseFloat((fee.amount.paid - fee.tax.paid).toFixed(2)),
+                due: parseFloat((fee.amount.due - fee.tax.due).toFixed(2))
+            },
+            tax: {
+                expected: fee.tax.expected,
+                paid: fee.tax.paid,
+                due: fee.tax.due
+            }
+        }
+        output['penalty'] = {
+            amount: {
+                expected: parseFloat((penalty.amount.expected - penalty.tax.expected).toFixed(2)),
+                paid: parseFloat((penalty.amount.paid - penalty.tax.paid).toFixed(2)),
+                due: parseFloat((penalty.amount.due - penalty.tax.due).toFixed(2))
+            },
+            tax: {
+                expected: penalty.tax.expected,
+                paid: penalty.tax.paid,
+                due: penalty.tax.due
+            }
+        }
+        result.push(output)
+    })
+    return result
+}
+
 export const Utils = {
     headers,
     catalogProducts,
     bodyClient,
     updateClient,
-    updateLoan
+    updateLoan,
+    segmentationSchema
 }
 
 export default null

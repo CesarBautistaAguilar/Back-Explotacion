@@ -31,11 +31,33 @@ const updateLoan = async (req, res) => {
     res.status(status)
     res.json(result)
 }
-  
+
+const getLoan = async (req, res) => {
+    console.log('=========================================================')
+    console.log('Controller starting method getLoan')
+    const query = req.query
+    console.log(`Query params: ${JSON.stringify(query)}`)
+    const result = await loanService.getLoan(query)
+    console.log('Controller ending method getLoan')
+    res.json(result)
+}
+
+const getSchemaLoan = async (req, res) => {
+    console.log('=========================================================')
+    console.log('Controller starting method getSchemaLoan')
+    const { loanId } = req.params
+    console.log(`loanId: ${JSON.stringify(loanId)}`)
+    const result = await loanService.getSchemaMambu(loanId)
+    console.log('Controller ending method getSchemaLoan')
+    res.json(result)
+}
+
 export const loansController = {
     getLoanMambu,
     createLoan,
-    updateLoan
+    updateLoan,
+    getLoan,
+    getSchemaLoan
 }
   
 export default null

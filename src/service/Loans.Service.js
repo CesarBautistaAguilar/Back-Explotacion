@@ -52,10 +52,36 @@ const updateLoan = async body => {
     return { result, status }
 }
 
+const getLoan = async query => {
+    console.log('Service starting method getLoan')
+    console.log(`Search: ${JSON.stringify(query)}`)
+    const result = await loansDao.getLoans(query)
+    console.log(`Result: ${JSON.stringify(result)}`)
+    console.log('Service ending method getLoan')
+    return result
+}
+
+const getSchemaMambu = async (loanId) => {
+    console.log('Service starting method getSchemaMambu')
+    const sendMambu = await consumeServices.petitionRest(`loans/${loanId}/schedule?detailsLevel=FULL`, {}, 'GET')
+    const processMambu = await JSON.parse(JSON.stringify(await sendMambu.json()))
+    const { installments } = processMambu
+    const newInstallment = Utils.segmentationSchema(installments)
+    const result = {
+        installment: newInstallment,
+        currency: processMambu.currency
+    }
+    //console.log(`Response: ${JSON.stringify(result)}`)
+    console.log('Service ending method getSchemaMambu')
+    return result
+}
+
 export const loanService = {
     getLoanMambu,
     createLoan,
-    updateLoan
+    updateLoan,
+    getLoan,
+    getSchemaMambu
 }
   
 export default null
