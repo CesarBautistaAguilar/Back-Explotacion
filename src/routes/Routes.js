@@ -19,6 +19,7 @@ router.route('/loan')
     .put(loansController.updateLoan)
 router.route('/loan-mambu/:loanId').get(loansController.getLoanMambu)
 router.route('/loan-schema/:loanId').get(loansController.getSchemaLoan)
+router.route('/loan-simulation').post(loansController.getSimulationLoan)
 router.route('/product').post(ProductController.healthCheck)
 router.route('/product/search').get(ProductController.getAllProduct)
 

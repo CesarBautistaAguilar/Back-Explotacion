@@ -52,12 +52,24 @@ const getSchemaLoan = async (req, res) => {
     res.json(result)
 }
 
+const getSimulationLoan = async (req, res) => {
+    console.log('=========================================================')
+    console.log('Controller starting method getSimulationLoan')
+    const { body } = req
+    console.log(`loanId: ${JSON.stringify(body)}`)
+    const { result, status } = await loanService.getSimulationLoan(body)
+    console.log('Controller ending method getSimulationLoan')
+    res.status(status)
+    res.json(result)
+}
+
 export const loansController = {
     getLoanMambu,
     createLoan,
     updateLoan,
     getLoan,
-    getSchemaLoan
+    getSchemaLoan,
+    getSimulationLoan
 }
   
 export default null

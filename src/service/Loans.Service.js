@@ -76,12 +76,35 @@ const getSchemaMambu = async (loanId) => {
     return result
 }
 
+const getSimulationLoan = async body => {
+    console.log('Service starting method getSimulationLoan')
+    let result
+    const sendMambu = await consumeServices.petitionRest('loans:previewSchedule', body, 'POST')
+    const status = sendMambu.status
+    if (sendMambu.ok) {
+        const processMambu = await JSON.parse(JSON.stringify(await sendMambu.json()))
+        const { installments } = processMambu
+        const newInstallment = Utils.segmentationSchema(installments)
+        result = {
+            installment: newInstallment,
+            currency: processMambu.currency
+        }
+    }
+    else{
+        result = await sendMambu.json()
+    }
+    console.log(`Result: ${JSON.stringify(result)}`)
+    console.log('Service ending method getSimulationLoan')
+    return { result, status }
+}
+
 export const loanService = {
     getLoanMambu,
     createLoan,
     updateLoan,
     getLoan,
-    getSchemaMambu
+    getSchemaMambu,
+    getSimulationLoan
 }
   
 export default null

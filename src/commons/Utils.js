@@ -59,6 +59,7 @@ const updateLoan = property => {
 }
 
 const segmentationSchema = installments => {
+    console.log('Utils ending method segmentationSchema')
     const result = []
     installments.forEach(installment =>{
         const { interest, fee, penalty } = installment
@@ -101,6 +102,7 @@ const segmentationSchema = installments => {
         }
         result.push(output)
     })
+    console.log('Utils ending method segmentationSchema')
     return result
 }
 
