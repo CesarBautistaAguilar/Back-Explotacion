@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.get('/', HelloController.healthCheck)
 router.route('/client')
+    .get(clientsController.getClient)
     .post(clientsController.createClient)
     .put(clientsController.updateClient)
 router.route('/client-mambu/:clientId').get(clientsController.getClientMambu)

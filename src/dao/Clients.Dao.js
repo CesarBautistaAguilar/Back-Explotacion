@@ -35,10 +35,19 @@ const existsClients = async id => {
     return result
 }
 
+const getClients = async search => {
+    console.log('DAO starting method getClients')
+    const result = await clients.find(search)
+    console.log(`Result: ${JSON.stringify(result)}`)
+    console.log('DAO ending method getClients')
+    return result
+}
+
 export const clientsDao = {
     saveClients,
     existsClients,
-    updateClients
+    updateClients,
+    getClients
 }
 
 export default null

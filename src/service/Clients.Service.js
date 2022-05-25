@@ -54,11 +54,21 @@ const updateClient = async body => {
     return { result, status }
 }
 
+const getClient = async query => {
+    console.log('Service starting method getClient')
+    console.log(`Search: ${JSON.stringify(query)}`)
+    const result = await clientsDao.getClients(query)
+    console.log(`Result: ${JSON.stringify(result)}`)
+    console.log('Service ending method getClient')
+    return result
+}
+
 export const productService = {
     getClientMambu,
     validationClient,
     createClient,
-    updateClient
+    updateClient,
+    getClient
 }
   
 export default null

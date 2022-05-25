@@ -41,12 +41,23 @@ const updateClient = async (req, res) => {
     res.status(status)
     res.json(result)
 }
+
+const getClient = async (req, res) => {
+    console.log('=========================================================')
+    console.log('Controller starting method getClient')
+    const query = req.query
+    console.log(`Query params: ${JSON.stringify(query)}`)
+    const result = await productService.getClient(query)
+    console.log('Controller ending method getClient')
+    res.json(result)
+}
   
 export const clientsController = {
     getClientMambu,
     createClient,
     validationClient,
-    updateClient
+    updateClient,
+    getClient
 }
   
 export default null
