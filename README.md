@@ -1,6 +1,6 @@
-# API Explotacion
+# API MOCK MS MAMBU
 
-_Mock de explotacion en Mambu_
+_Mock de microservicio mambu_
 
 ## Comenzando 🚀
 
