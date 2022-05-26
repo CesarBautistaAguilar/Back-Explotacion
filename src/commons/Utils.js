@@ -8,11 +8,13 @@ const headers = {
 
 const catalogProducts = (property) => {
     const result = {
-        encodedKey: property.encodedKey, 
+        encodedKey: property.encodedKey,
         name: property.name, 
         notes: property.notes, 
         loanAmount: property.loanAmountSettings.loanAmount,
         numInstallments: property.scheduleSettings.numInstallments,
+        scheduleDueDatesMethod: property.scheduleSettings.scheduleDueDatesMethod,
+        repaymentScheduleMethod: property.scheduleSettings.repaymentScheduleMethod,
         interestRate: property.interestSettings.indexRateSettings.interestRate,
         creditArrangementSettings: property.creditArrangementSettings.creditArrangementRequirement,
         amortizationMethod: property.paymentSettings.amortizationMethod

@@ -68,7 +68,7 @@ const getSchemaMambu = async (loanId) => {
     const { installments } = processMambu
     const newInstallment = Utils.segmentationSchema(installments)
     const result = {
-        installment: newInstallment,
+        installments: newInstallment,
         currency: processMambu.currency
     }
     //console.log(`Response: ${JSON.stringify(result)}`)
