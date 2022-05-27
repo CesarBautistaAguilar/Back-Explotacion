@@ -6,18 +6,30 @@ const headers = {
     Authorization: `Basic ${Constans.AUTH}`
   }
 
+  const feeInformation = fees => {
+      const result = []
+      fees.forEach(fee => {
+          result.push({
+            encodedKey: fee.encodedKey,
+            name: fee.name,
+            feeApplication: fee.feeApplication
+          })
+      })
+      return result
+  }
+
 const catalogProducts = (property) => {
     const result = {
         encodedKey: property.encodedKey,
         name: property.name, 
-        notes: property.notes, 
         loanAmount: property.loanAmountSettings.loanAmount,
         numInstallments: property.scheduleSettings.numInstallments,
         scheduleDueDatesMethod: property.scheduleSettings.scheduleDueDatesMethod,
         repaymentScheduleMethod: property.scheduleSettings.repaymentScheduleMethod,
         interestRate: property.interestSettings.indexRateSettings.interestRate,
         creditArrangementSettings: property.creditArrangementSettings.creditArrangementRequirement,
-        amortizationMethod: property.paymentSettings.amortizationMethod
+        amortizationMethod: property.paymentSettings.amortizationMethod,
+        fees: feeInformation(property.feesSettings.fees)
     }
     return result
 }
